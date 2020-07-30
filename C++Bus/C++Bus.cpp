@@ -8,20 +8,18 @@
 
 #define BUSCAPACITY 30
 
-using namespace std;
-
 void addBus();
 void clearAll();
 void show();
 void printReservations(int);
 void reserve();
-void seatDisplay(int);
+std::string seatDisplay(int);
 
 class Bus {
     public:
         virtual int getId() = 0;
         int id;
-        string driver;
+        std::string driver;
 };
 
 class busInfo : public Bus {
@@ -33,7 +31,7 @@ public:
         driver = "";
     }
 
-    busInfo(string c, string d, int i, string drive/*, tm* a, tm* b*/) {
+    busInfo(std::string c, std::string d, int i, std::string drive/*, tm* a, tm* b*/) {
         /*aTime = a;
         dTime = b;*/
         destFrom = c;
@@ -47,30 +45,30 @@ public:
     }
 
     void writeIn() {
-        file.open("C:\\Temp\\tmp\\BusInfo.txt", ios::app);
-        file << id << endl;
-        file << driver << endl;
-        file << destFrom << endl;
-        file << destTo << endl;
+        file.open("C:\\Temp\\tmp\\BusInfo.txt", std::ios::app);
+        file << id << std::endl;
+        file << driver << std::endl;
+        file << destFrom << std::endl;
+        file << destTo << std::endl;
         /*file << asctime(aTime) << endl;
         file << asctime(dTime) << endl;*/
-        file << "END" << endl;
+        file << "END" << std::endl;
 
         file.close();
     }
 
     tm* aTime;   //Accurate to MM/DD/YY
     tm* dTime;
-    string destFrom;
-    string destTo;
+    std::string destFrom;
+    std::string destTo;
     
 private:
-    fstream file;
+    std::fstream file;
 };
 
 class Reservation : Bus {
 public:
-    Reservation(int s, string p, int i) {
+    Reservation(int s, std::string p, int i) {
         seatNum = s;
         passenger = p;
         id = i;
@@ -80,7 +78,7 @@ public:
     }
 
     int seatNum;
-    string passenger;
+    std::string passenger;
 };
 
 int main()
@@ -88,13 +86,13 @@ int main()
     int choice;
     bool goAgain = true;
     while (goAgain == true) {
-        cout << "1. Install" << endl;
-        cout << "2. Reservation" << endl;
-        cout << "3. Show reservation information" << endl;
-        cout << "4. Buses available" << endl;
-        cout << "5. Clear all Info" << endl;
-        cout << "6. Exit" << endl;
-        cin >> choice;
+        std::cout << "1. Install" << std::endl;
+        std::cout << "2. Reservation" << std::endl;
+        std::cout << "3. Show reservation information" << std::endl;
+        std::cout << "4. Buses available" << std::endl;
+        std::cout << "5. Clear all Info" << std::endl;
+        std::cout << "6. Exit" << std::endl;
+        std::cin >> choice;
 
         switch (choice) {
         case 1: addBus();
@@ -104,43 +102,43 @@ int main()
         case 3:show();
             break;
         case 5: clearAll();
-            cout << "All bus info deleted" << endl;
+            std::cout << "All bus info deleted" << std::endl;
             break;
         case 6: goAgain = false;
             break;
         }
-        cout << endl;
+        std::cout << std::endl;
     }
 }
 
 void show() {
-    ifstream infile;
+    std::ifstream infile;
     infile.open("C:\\Temp\\tmp\\BusInfo.txt");
-    string str;
+    std::string str;
     int count = 1;
-    string temp;
+    std::string temp;
 
     while (getline(infile, str)) {
         if (str != "END") {
             switch (count) {
-            case 1: cout << "ID: ";
+            case 1: std::cout << "ID: ";
                 temp = str;
                 break;
-            case 2: cout << "Driver's Name: ";
+            case 2: std::cout << "Driver's Name: ";
                 break;
-            case 3: cout << "Departure location: ";
+            case 3: std::cout << "Departure location: ";
                 break;
-            case 4: cout << "Destination: ";
+            case 4: std::cout << "Destination: ";
                 break;
             }
             count++;
-            cout << str << endl;
+            std::cout << str << std::endl;
         }
         else {
-            cout << "\nBus reservation Info\n" << endl;
+            std::cout << "\nBus reservation Info\n" << std::endl;
             printReservations(stoi(temp));
             count = 1;
-            cout << endl << "Next bus";
+            std::cout << std::endl << "Next bus";
         }
         
     }
@@ -148,60 +146,66 @@ void show() {
 }
 
 void printReservations(int busId) {
-    string fileName = "C:\\Temp\\tmp\\R";
-    fileName += to_string(busId);
+    std::string fileName = "C:\\Temp\\tmp\\R";
+    fileName += std::to_string(busId);
     fileName += ".txt";
     
-    ifstream file;
+    std::ifstream file;
     file.open(fileName);
-    string str;
+    std::string str;
     while (getline(file, str)) {
-        cout << str << endl;
+        std::cout << str << std::endl;
     }
 }
 
 void addBus() {
     busInfo temp;
-    cout << "Enter a bus ID" << endl;
-    cin >> temp.id, 20;
-    cin.ignore();
-    cout << "Enter driver's full name" << endl;
-    getline(cin, temp.driver);
+    std::cout << "Enter a bus ID" << std::endl;
+    std::cin >> temp.id, 20;
+    std::cin.ignore();
+    std::cout << "Enter driver's full name" << std::endl;
+    getline(std::cin, temp.driver);
     /*cout << "Enter the departure date" << endl;
     cin >> temp.dTime->tm_mday;
     cout << "Enter the arrival date" << endl;
     cin >> temp.aTime;*/
-    cout << "Enter departure location" << endl;
-    getline(cin, temp.destFrom);
-    cout << "Enter destination" << endl;
-    getline(cin, temp.destTo);
+    std::cout << "Enter departure location" << std::endl;
+    getline(std::cin, temp.destFrom);
+    std::cout << "Enter destination" << std::endl;
+    getline(std::cin, temp.destTo);
 
     temp.writeIn();
 
-    string fileName = "C:\\Temp\\tmp\\R";
-    fileName += to_string(temp.id);
+    std::string fileName = "C:\\Temp\\tmp\\R";
+    fileName += std::to_string(temp.id);
     fileName += ".txt";
 
-    ofstream fileCreate (fileName);
-    fileCreate << "" << endl;
+    std::ofstream fileCreate (fileName);
+    fileCreate << "" << std::endl;
     fileCreate.close();
     
-    fstream file;
-    file.open(fileName, ios::out); //Name files based off bus id
+    std::ofstream file;
+
+    char* writable = new char[fileName.size() + 1];
+    std::copy(fileName.begin(), fileName.end(), writable);
+    writable[fileName.size()] = '\0'; // don't forget the terminating 0
+
+    file.open(writable); //Name files based off bus id
     for (int x = 1; x <= BUSCAPACITY; x++) {
-        file << x << ". EMPTY" << endl;
+        file << x << ". EMPTY" << std::endl;
     }
 
+    delete[] writable;
     file.close();
 }
 
 void clearAll() {
-    ifstream file;  
+    std::ifstream file;
 
-    string fileName;
+    std::string fileName;
     char* pFileName;
     bool isId = true;
-    string str;
+    std::string str;
     file.open("C:\\Temp\\tmp\\BusInfo.txt");
     while (getline(file, str)) {
         if (isId == true) {
@@ -209,9 +213,9 @@ void clearAll() {
             fileName += str;
             fileName += ".txt";
 
-            //char* writable = new char[fileName.size() + 1];
-            //copy(fileName.begin(), fileName.end(), writable);
-            //writable[fileName.size()] = '\0'; // don't forget the terminating 0
+            char* writable = new char[fileName.size() + 1];
+            std::copy(fileName.begin(), fileName.end(), writable);
+            writable[fileName.size()] = '\0'; // don't forget the terminating 0
 
             remove(writable);
 
@@ -227,35 +231,35 @@ void clearAll() {
     file.close();
 
     remove("C:\\Temp\\tmp\\BusInfo.txt");
-    file.open("C:\\Temp\\tmp\\BusInfo.txt", ios::out);
+    file.open("C:\\Temp\\tmp\\BusInfo.txt", std::ios::out);
     file.close();
 }
 
 void reserve() {
-    cout << "Enter a bus number for reservation\n" << endl;
-    ifstream infile;
+    std::cout << "Enter a bus number for reservation\n" << std::endl;
+    std::ifstream infile;
     infile.open("C:\\Temp\\tmp\\BusInfo.txt");
-    string str;
+    std::string str;
     int count = 1;
     int busCount = 1;
     while (getline(infile, str)) {
         if (str != "END") {
             switch (count) {
-            case 1: cout << "Bus " << busCount << endl;
-                cout << "ID: ";
+            case 1: std::cout << "Bus " << busCount << std::endl;
+                std::cout << "ID: ";
                 break;
-            case 2: cout << "Driver's Name: ";
+            case 2: std::cout << "Driver's Name: ";
                 break;
-            case 3: cout << "Departure location: ";
+            case 3: std::cout << "Departure location: ";
                 break;
-            case 4: cout << "Destination: ";
+            case 4: std::cout << "Destination: ";
                 break;
             }
             count++;
-            cout << str << endl;
+            std::cout << str << std::endl;
         }
         else {
-            cout << endl;
+            std::cout << std::endl;
             count = 1;
             busCount++;
         }
@@ -265,13 +269,15 @@ void reserve() {
 
     int choice;
     count = 1;
-    cin >> choice;
+    std::cin >> choice;
 
     infile.open("C:\\Temp\\tmp\\BusInfo.txt");
 
+    std::string rFile;
+
     while (getline(infile, str)) {
         if (count == choice) {
-            seatDisplay(stoi(str));
+            rFile = seatDisplay(stoi(str));
             break;
         }
         
@@ -279,22 +285,80 @@ void reserve() {
             count++;
         }
     }
-
     infile.close();
+
+    std::string passenger;
+
+    std::cin >> choice;
+    std::cout << "Enter the passenger name to reserve the seat" << std::endl;
+    std::cin >> passenger;
+
+    int lineCounter = 1;
+    std::ifstream fileRead;
+    std::ofstream fileIn;
+
+    fileIn.open("C:\\Temp\\tmp\\temp.txt");
+    fileRead.open(rFile);
+
+    while (getline(fileRead, str)) {
+        if (lineCounter != choice)
+        {
+            fileIn << str << std::endl;
+        }
+        else {
+            fileIn << choice << ". " << passenger << std::endl;
+            break;
+        }
+        lineCounter++;
+    }
+    fileRead.close();
+    fileIn.close();
+
+    char* writable = new char[rFile.size() + 1];
+    std::copy(rFile.begin(), rFile.end(), writable);
+    writable[rFile.size()] = '\0'; // don't forget the terminating 0
+
+    remove(writable);
+    rename("C:\\Temp\\tmp\\temp.txt", writable);
+
+    delete[] writable;
 }
 
-void seatDisplay(int id) {
-    string fileName = "C:\\Temp\\tmp\\R";
-    fileName += to_string(id);
+std::string seatDisplay(int id) {
+    std::string fileName = "C:\\Temp\\tmp\\R";
+    fileName += std::to_string(id);
     fileName += ".txt";
 
-    string str;
+    char* writable = new char[fileName.size() + 1];
+    std::copy(fileName.begin(), fileName.end(), writable);
+    writable[fileName.size()] = '\0'; // don't forget the terminating 0
 
-    fstream file;
-    file.open(fileName, ios::out); //Name files based off bus id
+    std::string str;
+
+    std::ifstream file;
+    file.open(writable); //Name files based off bus id
     while(getline(file, str)){
-        cout << str << endl;
+        std::cout << str << std::endl;
     }
+
+    std::cout << "From the above, pick an available seat" << std::endl;
+
+    delete[] writable;
+
+    file.close();
+
+    return fileName;
+}
+
+char* fileChar(std::string fileName) {
+    char* writable = new char[fileName.size() + 1];
+    std::copy(fileName.begin(), fileName.end(), writable);
+    writable[fileName.size()] = '\0'; // don't forget the terminating 0
+    
+    char* returnValue = writable;
+    delete[] writable;
+
+    return returnValue;
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
