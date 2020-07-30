@@ -14,6 +14,7 @@ void show();
 void printReservations(int);
 void reserve();
 std::string seatDisplay(int);
+char* fileChar(std::string);
 
 class Bus {
     public:
@@ -307,7 +308,6 @@ void reserve() {
         }
         else {
             fileIn << choice << ". " << passenger << std::endl;
-            break;
         }
         lineCounter++;
     }
@@ -320,8 +320,6 @@ void reserve() {
 
     remove(writable);
     rename("C:\\Temp\\tmp\\temp.txt", writable);
-
-    delete[] writable;
 }
 
 std::string seatDisplay(int id) {
@@ -348,17 +346,6 @@ std::string seatDisplay(int id) {
     file.close();
 
     return fileName;
-}
-
-char* fileChar(std::string fileName) {
-    char* writable = new char[fileName.size() + 1];
-    std::copy(fileName.begin(), fileName.end(), writable);
-    writable[fileName.size()] = '\0'; // don't forget the terminating 0
-    
-    char* returnValue = writable;
-    delete[] writable;
-
-    return returnValue;
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
